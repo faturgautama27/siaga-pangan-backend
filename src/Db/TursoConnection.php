@@ -24,6 +24,7 @@ class TursoConnection
         $this->token   = Settings::tursoToken();
         $this->http    = new Client([
             'timeout' => 30,
+            'verify'  => false, // disable SSL verify untuk development lokal Windows
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
                 'Content-Type'  => 'application/json',

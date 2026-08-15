@@ -17,6 +17,8 @@ class Settings
         if (!$url) {
             throw new \RuntimeException('TURSO_DATABASE_URL environment variable is not set.');
         }
+        // Turso HTTP API butuh https://, bukan libsql://
+        $url = preg_replace('/^libsql:\/\//', 'https://', $url);
         return rtrim($url, '/');
     }
 
