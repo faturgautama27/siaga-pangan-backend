@@ -163,13 +163,18 @@ class ExcelParserService
      */
     private function parseHarga(mixed $raw): ?float
     {
-        if (is_numeric($raw)) {
+        if ($raw === null || $raw === '') {
+            return null;
+        }
+
+        // Jika sudah integer, langsung konversi
+        if (is_int($raw)) {
             return (float) $raw;
         }
 
-        // Strip koma pemisah ribuan (format Indonesia: 31,333)
-        $cleaned = str_replace(',', '', (string) $raw);
-        $cleaned = str_replace('.', '', $cleaned); // strip titik ribuan juga
+        // Normalisasi string: strip koma dan titik sebagai pemisah ribuan
+        // Format Indonesia: 31,333 atau 31.333 = tiga puluh satu ribu tiga ratus tiga puluh tiga
+        $cleaned = str_replace([',', '.'], '', (string) $raw);
 
         if (!is_numeric($cleaned)) {
             return null;
