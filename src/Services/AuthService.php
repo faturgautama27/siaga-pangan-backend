@@ -19,7 +19,7 @@ class AuthService
     public function login(string $username, string $password): ?array
     {
         $rows = $this->db->query(
-            'SELECT id, username, password_hash, nama, role FROM users WHERE username = ? LIMIT 1',
+            'SELECT id, email, password_hash, nama, role FROM users WHERE email = ? LIMIT 1',
             [$username]
         );
 

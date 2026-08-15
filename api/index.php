@@ -50,41 +50,71 @@ $app->addRoutingMiddleware();
 $app->add(new CorsMiddleware());
 
 // Routes
-$app->post('/api/auth/login', [AuthController::class, 'login']);
+$app->post('/api/auth/login', function ($request, $response) {
+    return AuthController::create()->login($request, $response);
+});
 
 // Upload Excel
-$app->post('/api/upload', [UploadController::class, 'upload'])
+$app->post('/api/upload', function ($request, $response) {
+    return UploadController::create()->upload($request, $response);
+})
     ->add(new RoleMiddleware(['admin', 'operator']))
     ->add(new AuthMiddleware());
-$app->get('/api/upload-log', [UploadController::class, 'log'])
+$app->get('/api/upload-log', function ($request, $response) {
+    return UploadController::create()->log($request, $response);
+})
     ->add(new RoleMiddleware(['admin', 'operator']))
     ->add(new AuthMiddleware());
 
 // Data master (dropdown)
-$app->get('/api/wilayah', [HargaHarianController::class, 'wilayah']);
-$app->get('/api/komoditi', [HargaHarianController::class, 'komoditi']);
+$app->get('/api/wilayah', function ($request, $response) {
+    return HargaHarianController::create()->wilayah($request, $response);
+});
+$app->get('/api/komoditi', function ($request, $response) {
+    return HargaHarianController::create()->komoditi($request, $response);
+});
 
 // Fitur utama — semua authenticated
-$app->get('/api/harga-harian', [HargaHarianController::class, 'index'])
-    ->add(new AuthMiddleware());
-$app->get('/api/grafik', [GrafikController::class, 'index'])
-    ->add(new AuthMiddleware());
-$app->get('/api/ihk', [IhkController::class, 'compare'])
-    ->add(new AuthMiddleware());
-$app->get('/api/analisa-provinsi', [AnalisaProvinsiController::class, 'index'])
-    ->add(new AuthMiddleware());
-$app->get('/api/ews', [EwsController::class, 'index'])
-    ->add(new AuthMiddleware());
-$app->post('/api/laporan-koordinasi', [LaporanKoordinasiController::class, 'store'])
+$app->get('/api/harga-harian', function ($request, $response) {
+    return HargaHarianController::create()->index($request, $response);
+})->add(new AuthMiddleware());
+
+$app->get('/api/grafik', function ($request, $response) {
+    return GrafikController::create()->index($request, $response);
+})->add(new AuthMiddleware());
+
+$app->get('/api/ihk', function ($request, $response) {
+    return IhkController::create()->compare($request, $response);
+})->add(new AuthMiddleware());
+
+$app->get('/api/analisa-provinsi', function ($request, $response) {
+    return AnalisaProvinsiController::create()->index($request, $response);
+})->add(new AuthMiddleware());
+
+$app->get('/api/ews', function ($request, $response) {
+    return EwsController::create()->index($request, $response);
+})->add(new AuthMiddleware());
+
+$app->post('/api/laporan-koordinasi', function ($request, $response) {
+    return LaporanKoordinasiController::create()->store($request, $response);
+})
     ->add(new RoleMiddleware(['admin', 'pic', 'koordinator']))
     ->add(new AuthMiddleware());
-$app->get('/api/laporan-koordinasi', [LaporanKoordinasiController::class, 'index'])
-    ->add(new AuthMiddleware());
-$app->get('/api/prognosa-stok', [PrognosaController::class, 'index'])
-    ->add(new AuthMiddleware());
-$app->get('/api/pasar', [PasarController::class, 'index'])
-    ->add(new AuthMiddleware());
-$app->get('/api/executive-summary', [ExecutiveSummaryController::class, 'index'])
-    ->add(new AuthMiddleware());
+
+$app->get('/api/laporan-koordinasi', function ($request, $response) {
+    return LaporanKoordinasiController::create()->index($request, $response);
+})->add(new AuthMiddleware());
+
+$app->get('/api/prognosa-stok', function ($request, $response) {
+    return PrognosaController::create()->index($request, $response);
+})->add(new AuthMiddleware());
+
+$app->get('/api/pasar', function ($request, $response) {
+    return PasarController::create()->index($request, $response);
+})->add(new AuthMiddleware());
+
+$app->get('/api/executive-summary', function ($request, $response) {
+    return ExecutiveSummaryController::create()->index($request, $response);
+})->add(new AuthMiddleware());
 
 $app->run();
