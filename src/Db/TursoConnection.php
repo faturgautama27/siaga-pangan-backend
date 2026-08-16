@@ -148,7 +148,8 @@ class TursoConnection
             } elseif (is_int($val)) {
                 return ['type' => 'integer', 'value' => (string) $val];
             } elseif (is_float($val)) {
-                return ['type' => 'float', 'value' => (string) $val];
+                // Turso v2 pipeline API requires float value as native JSON number, not string
+                return ['type' => 'float', 'value' => $val];
             } else {
                 return ['type' => 'text', 'value' => (string) $val];
             }
